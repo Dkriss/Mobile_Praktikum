@@ -57,5 +57,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-// contoh commit mugo mugo kenek
