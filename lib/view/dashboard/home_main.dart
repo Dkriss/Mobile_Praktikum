@@ -328,7 +328,7 @@ class _HomeState extends State<Home> {
                               onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const LogNote())),
+                                      builder: (context) => MyApp())),
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18),
