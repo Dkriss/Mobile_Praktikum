@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:modul_mobile/view/dashboard/home_main.dart';
+import 'package:modul_mobile/view/welcome_screen/login_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -63,16 +63,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       child: ElevatedButton(
                         style: ButtonStyle(
                           shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                          MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(18.0),
                             ),
                           ),
                         ),
-                        onPressed: () => Navigator.push(
+                        onPressed: () {
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const Home())),
+                              builder: (context) =>
+                                  const LoginPage(), // Ganti LoginScreen() dengan sesuai dengan nama file login.dart Anda
+                            ),
+                          );
+                        },
                         child: const Text('Get Started'),
                       ),
                     )
@@ -85,8 +90,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 children: [
                   Align(alignment: Alignment.topCenter),
                   Padding(
-                    padding:
-                        EdgeInsets.only(left: 15, right: 15, top: 50, bottom: 80),
+                    padding: EdgeInsets.only(
+                        left: 15, right: 15, top: 50, bottom: 80),
                     child: Text(
                       'Welcome To U-Travel.Co',
                       style: TextStyle(
