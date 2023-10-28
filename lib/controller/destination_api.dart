@@ -1,6 +1,6 @@
 // destination_api.dart
 
-import 'package:modul_mobile/controller/destination_model.dart';
+import 'package:mobilepraktikum/controller/destination_model.dart';
 
 class DestinationApi {
   final List<DestinationModel> _destinations;

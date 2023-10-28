@@ -2,7 +2,7 @@
 
 // import 'package:flutter/foundation.dart';
 // import 'package:http/http.dart' as http;
-// import 'package:modul_mobile/controller/api.dart';
+// import 'package:mobilepraktikum/controller/api.dart';
 //
 // class ApiService {
 //   final String baseUrl;

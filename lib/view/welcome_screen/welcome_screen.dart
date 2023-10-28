@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:modul_mobile/view/welcome_screen/login_page.dart';
+import 'package:mobilepraktikum/view/welcome_screen/login_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});

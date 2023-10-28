@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:modul_mobile/controller/destination_model.dart';
-import 'package:modul_mobile/controller/transportation_model.dart';
-import 'package:modul_mobile/view/dashboard/log_note.dart';
-import 'package:modul_mobile/view/dashboard/profile.dart';
+import 'package:mobilepraktikum/controller/destination_model.dart';
+import 'package:mobilepraktikum/controller/transportation_model.dart';
+import 'package:mobilepraktikum/view/dashboard/log_note.dart';
+import 'package:mobilepraktikum/view/dashboard/profile.dart';
 // API Keywoard Search
-import 'package:modul_mobile/controller/destination_api.dart';
+import 'package:mobilepraktikum/controller/destination_api.dart';
 
 
 class Home extends StatefulWidget {

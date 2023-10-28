@@ -1,4 +1,4 @@
-# modul_mobile
+# mobilepraktikum
 
 A new Flutter project.
 

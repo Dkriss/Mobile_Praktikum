@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:modul_mobile/view/welcome_screen/welcome_screen.dart';
+import 'package:mobilepraktikum/view/welcome_screen/welcome_screen.dart';
 
 
 void main() {
