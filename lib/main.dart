@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mobilepraktikum/model/user_repository.dart';
 import 'package:mobilepraktikum/view/welcome_screen/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -6,11 +8,11 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   //////////////// API FIREBASE////////////////////
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   /////////////////////////////////////////////////
   runApp(const MainPage());
+  Get.put(UserRepository());
 }
 
 class MainPage extends StatefulWidget {

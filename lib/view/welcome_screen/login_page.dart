@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mobilepraktikum/controller/user_model.dart';
 
+import '../../model/user_repository.dart';
 import '../dashboard/home_main.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,6 +13,36 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  void _handleSignUp() async {
+    final email = emailController.text;
+    final password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      Get.snackbar("Error", "Email and password are required",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withOpacity(0.1),
+          colorText: Colors.red);
+      return;
+    }
+
+    final signUpSuccessful = await UserRepository.instance.signUpWithEmailAndPassword(email, password);
+
+    if (signUpSuccessful) {
+      Get.snackbar("Success", "Account has been created",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green.withOpacity(0.1),
+          colorText: Colors.green);
+      // Redirect to login or another page
+    } else {
+      Get.snackbar("Error", "Failed to create account. Try again",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withOpacity(0.1),
+          colorText: Colors.red);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   // Email Input
                   TextFormField(
+                    controller: emailController,
                     decoration: const InputDecoration(
                       labelText: 'Email',
                     ),
@@ -42,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   // Password Input
                   TextFormField(
                     obscureText: true,
+                    controller: passwordController,
                     decoration: const InputDecoration(
                       labelText: 'Password',
                     ),
@@ -62,14 +97,20 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       );
                     },
-                    child: const Text('LoginPage'),
+                    child: const Text('Login'),
                   ),
 
                   // Daftar Button
                   TextButton(
-                    onPressed: () {
-                      // Handle daftar navigation or logic here
-                    },
+                    onPressed: _handleSignUp,
+                    // onPressed: () {
+                    //   ////////////// MENGARAH KE TAMPILAN WEB UNTUK DAFTAR /////////////////
+                    //   var controller;
+                    //   final user = UserModel(
+                    //       email: controller.email.text.trim(),
+                    //       password: controller.password.text.trim(),
+                    //   );
+                    // },
                     child: const Text('Daftar'),
                   ),
                 ],
