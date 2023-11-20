@@ -1,5 +1,4 @@
 
-
 class UserModel{
   final String email;
   final String password;
