@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:mobilepraktikum/model/user_repository.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:mobilepraktikum/controller/notification_handler.dart';
+import 'package:mobilepraktikum/firebase_options.dart';
 import 'package:mobilepraktikum/view/welcome_screen/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> main() async {
-  //////////////// API FIREBASE////////////////////
+
+void main() async {
+  /////////////// API FIREBASE////////////////////
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  /////////////////////////////////////////////////
-  runApp(const MainPage());
-  Get.put(UserRepository());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  //////////////// API FIREBASE////////////////////
+  /////////////// FUNGSI INIT PUSH NOTIFIKASI ///////////////////////////
+  await Get.putAsync(() async => await SharedPreferences.getInstance());
+  await FirebaseMessagingHandler().initPushNotification();
+  /////////////// FUNGSI INIT PUSH NOTIFIKASI ///////////////////////////
+  runApp(const GetMaterialApp(debugShowCheckedModeBanner: false, home: WelcomeScreen()));
 }
 
 class MainPage extends StatefulWidget {

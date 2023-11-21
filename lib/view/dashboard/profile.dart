@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobilepraktikum/view/welcome_screen/register_page.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
+
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -11,11 +15,26 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
    File? _image;
+   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6F8),
+      appBar: AppBar(
+        title: const Text('Profile'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () async {
+              // Log out the user
+              await _auth.signOut();
+              // Navigate to the registration page
+              Get.offAll(() => RegistrationPage());
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
           child: Stack(
             children: [

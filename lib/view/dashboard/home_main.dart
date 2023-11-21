@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobilepraktikum/controller/destination_model.dart';
-import 'package:mobilepraktikum/controller/transportation_model.dart';
+import 'package:mobilepraktikum/model/destination_model.dart';
+import 'package:mobilepraktikum/model/transportation_model.dart';
 import 'package:mobilepraktikum/view/dashboard/log_note.dart';
 import 'package:mobilepraktikum/view/dashboard/profile.dart';
 // API Keywoard Search

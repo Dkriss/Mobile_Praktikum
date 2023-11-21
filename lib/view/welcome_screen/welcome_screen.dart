@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobilepraktikum/view/welcome_screen/login_page.dart';
+import 'package:mobilepraktikum/view/welcome_screen/register_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -74,7 +74,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const LoginPage(), // Ganti LoginScreen() dengan sesuai dengan nama file login.dart Anda
+                                  RegistrationPage(), // Ganti LoginScreen() dengan sesuai dengan nama file login.dart Anda
                             ),
                           );
                         },
@@ -114,7 +114,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: Padding(
                 padding: EdgeInsets.only(right: 2, bottom: 2),
                 child: Text(
-                  'By dkriss_25',
+                  'By Praktikum Mobile',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
