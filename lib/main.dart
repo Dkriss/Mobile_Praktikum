@@ -13,12 +13,14 @@ void main() async {
   /////////////// API FIREBASE////////////////////
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  //////////////// API FIREBASE////////////////////
   /////////////// FUNGSI INIT PUSH NOTIFIKASI ///////////////////////////
   await Get.putAsync(() async => await SharedPreferences.getInstance());
   await FirebaseMessagingHandler().initPushNotification();
-  /////////////// FUNGSI INIT PUSH NOTIFIKASI ///////////////////////////
-  runApp(const GetMaterialApp(debugShowCheckedModeBanner: false, home: WelcomeScreen()));
+
+  runApp(const GetMaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: WelcomeScreen(),
+  ));
 }
 
 class MainPage extends StatefulWidget {
