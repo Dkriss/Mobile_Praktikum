@@ -12,10 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   /////////////// API FIREBASE////////////////////
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+  );
   /////////////// FUNGSI INIT PUSH NOTIFIKASI ///////////////////////////
   await Get.putAsync(() async => await SharedPreferences.getInstance());
   await FirebaseMessagingHandler().initPushNotification();
+  await FirebaseMessagingHandler().initLocalNotification();
+
 
   runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,
