@@ -1,11 +1,22 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Message received in background: ${message.notification?.title}');
 }
 
 class FirebaseMessagingHandler {
+  //////////// UNTUK NOTIFIKASI PADA BACKGROUND SERVICE ////////////////////
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  /////////// INISIALISASI NOTIFIKASI CHANNEL UNTUK ANDROID ////////////////
+  final _androidChannel = const AndroidNotificationChannel(
+      'channel_notification',
+      'High Importance Notification',
+      description: 'Used For Notification',
+      importance: Importance.defaultImportance,);
+  /////////// UNTUK NOTIFIKASI PADA SAAT APLIKASI BERJALAN ////////////////////
+  final _localNotification = FlutterLocalNotificationsPlugin();
+
 
   Future<void> initPushNotification() async {
     //allow user to give permission for notification
