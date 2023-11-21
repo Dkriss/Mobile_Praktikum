@@ -12,11 +12,10 @@ class RegistrationController extends GetxController {
   Future<void> register() async {
     try {
       UserCredential userCredential =
-      await _auth.createUserWithEmailAndPassword(
+          await _auth.createUserWithEmailAndPassword(
         email: email.value,
         password: password.value,
       );
-
       // Registrasi berhasil
       print('Registrasi berhasil: ${userCredential.user?.email}');
     } catch (e) {
