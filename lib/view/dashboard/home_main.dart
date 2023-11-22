@@ -105,6 +105,8 @@ class _HomeState extends State<Home> {
                   // ),
                 ],
               ),
+
+
               // container untuk menambahkan textfield
               Padding(
                 padding: const EdgeInsets.only(left: 0, top: 85, right: 0, bottom: 25),
@@ -155,12 +157,12 @@ class _HomeState extends State<Home> {
                 ),
               ),
 
-              // container widget bagian bawah 4 tombol elevatedButton ListView
+
+
+              // container widget bagian bawah 4 tombol elevatedButton ListView dengan gerakan horizontal
               Padding(
-                // padding dibawah untuk menggeser atas bawah Container
                 padding: const EdgeInsets.only(left: 0, top: 150, right: 0, bottom: 0),
                 child: Align(
-                  // untuk menaruh container dan 4 elevatedbutton di bagian atas layar
                   alignment: Alignment.topCenter,
                   child: Container(
                     height: 70, // Tinggi container
@@ -173,7 +175,6 @@ class _HomeState extends State<Home> {
                       },
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal, // Scroll horizontal
-                        // pemberian nama pada array of object dengan Listview
                         itemCount: daftarTransportation.length,
                         itemBuilder: (BuildContext context, int index) {
                           return SizedBox(
@@ -190,8 +191,8 @@ class _HomeState extends State<Home> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    // tipe data yang didefinisikan akan masuk ke dalam pemberian nama array tersebut
-                                    Icon(daftarTransportation[index].icon),
+                                    if (daftarTransportation[index].icon != null) // Tambahkan kondisi ini untuk memastikan ikon tidak null
+                                      Icon(daftarTransportation[index].icon),
                                     Text(daftarTransportation[index].title),
                                   ],
                                 ),
@@ -207,7 +208,7 @@ class _HomeState extends State<Home> {
 
 
 
-              // Container untuk informasi di tengah
+              // Container untuk informasi di tengah serta listview informasi
               Padding(
                 padding: const EdgeInsets.only(left: 0, top: 100, right: 0, bottom: 0),
                 child: Align(
