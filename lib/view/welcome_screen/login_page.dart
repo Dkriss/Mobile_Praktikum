@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobilepraktikum/view/welcome_screen/register_page.dart';
 
 import '../../controller/auth_controller.dart';
 
@@ -36,6 +37,32 @@ class LoginPage extends StatelessWidget {
               onPressed: () => _controller.login(),
               child: const Text('Login'),
             ),
+            Row(
+              children: [
+                const Text(
+                  "don't have any account?",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black),
+                ),//text
+                TextButton(onPressed: () {
+                  Navigator.of(context).
+                  pushReplacement(MaterialPageRoute(builder: (context) =>
+                      RegistrationPage(),));
+                },
+                  child: const Text(
+                    "Register",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                )
+              ],
+            )
           ],
         ),
       ),

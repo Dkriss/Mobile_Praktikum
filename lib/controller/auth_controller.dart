@@ -11,11 +11,11 @@ class RegistrationController extends GetxController {
 
   Future<void> register() async {
     try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email.value,
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email.value.trim(),  // Trim untuk menghapus spasi ekstra
         password: password.value,
       );
+
       // Registrasi berhasil
       print('Registrasi berhasil: ${userCredential.user?.email}');
     } catch (e) {
@@ -32,8 +32,15 @@ class LoginController extends GetxController {
 
   Future<void> login() async {
     try {
+      // Validasi format email sebelum login
+      if (!GetUtils.isEmail(email.value.trim())) {
+        print('Format email tidak valid');
+        // Tampilkan pesan kesalahan atau lakukan tindakan yang sesuai
+        return;
+      }
+
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email.value,
+        email: email.value.trim(),
         password: password.value,
       );
 
@@ -42,10 +49,11 @@ class LoginController extends GetxController {
 
       // Redirect to the home page or any other page after successful login
       Get.offAll(() =>
-          const Home()); // Replaces the current route stack with the HomePage
+      const Home()); // Replaces the current route stack with the HomePage
     } catch (e) {
       // Handle error
       print('Error during login: $e');
+
 
       if (e is FirebaseAuthException) {
         if (e.code == 'user-not-found') {

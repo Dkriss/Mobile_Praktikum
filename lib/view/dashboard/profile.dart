@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mobilepraktikum/view/welcome_screen/register_page.dart';
+
+import '../welcome_screen/login_page.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -14,8 +15,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-   File? _image;
-   final FirebaseAuth _auth = FirebaseAuth.instance;
+  File? _image;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +31,14 @@ class _ProfileState extends State<Profile> {
               // Log out the user
               await _auth.signOut();
               // Navigate to the registration page
-              Get.offAll(() => RegistrationPage());
+              Get.offAll(() => LoginPage());
             },
           ),
         ],
       ),
       body: SafeArea(
-          child: Stack(
-            children: [
+        child: Stack(
+          children: [
             Align(
               alignment: Alignment.topCenter,
               child: Padding(
@@ -70,8 +71,8 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            ],
-          ),
+          ],
+        ),
       ),
     );
   }
