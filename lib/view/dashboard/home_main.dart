@@ -191,8 +191,8 @@ class _HomeState extends State<Home> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    if (daftarTransportation[index].icon != null) // Tambahkan kondisi ini untuk memastikan ikon tidak null
-                                      Icon(daftarTransportation[index].icon),
+                                    // Tambahkan kondisi ini untuk memastikan ikon tidak null
+                                    Icon(daftarTransportation[index].icon),
                                     Text(daftarTransportation[index].title),
                                   ],
                                 ),
