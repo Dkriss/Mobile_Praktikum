@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobilepraktikum/controller/auth_controller.dart';
+import 'package:mobilepraktikum/controller/appwrite.dart';
+// import 'package:mobilepraktikum/controller/auth_controller.dart';
 import 'package:mobilepraktikum/view/welcome_screen/login_page.dart';
 
 class RegistrationPage extends StatefulWidget {
+  const RegistrationPage({super.key});
+
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final RegistrationController _controller = Get.put(RegistrationController());
+  final TextEditingController userNameControl = TextEditingController();
+  final TextEditingController emailControl = TextEditingController();
+  final TextEditingController passControl = TextEditingController();
+
+  // final RegistrationController _controller = Get.put(RegistrationController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,22 +30,43 @@ class _RegistrationPageState extends State<RegistrationPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              onChanged: (value) => _controller.email.value = value,
+              controller: userNameControl,
+              // onChanged: (value) => _controller.email.value = value,
+              decoration: const InputDecoration(labelText: 'Nama'),
+            ),
+            TextField(
+              controller: emailControl,
+              // onChanged: (value) => _controller.email.value = value,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 16),
             TextField(
-              onChanged: (value) => _controller.password.value = value,
+              controller: passControl,
+              // onChanged: (value) => _controller.password.value = value,
               obscureText: true,
               decoration: const InputDecoration(labelText: 'Password'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
-                ////////////// UNTUK MENUNGGU HINGGA REGISTRASI SELESAI //////////////////
-                await _controller.register();
-                ////////////// SETELAH SELESAI, PINDAH KE LOGINPAGE ///////////////////
-                Get.to(() => LoginPage());
+                try {
+                  await createUser(userNameControl.text, emailControl.text,
+                      passControl.text)
+                      .then((value) {
+                    if (value == 'success') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Register Success")));
+                      Get.to(() => LoginPage());
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(value)));
+                    }
+                  });
+                } catch (error) {
+                  print("Error during registration: $error");
+                }
+                // ////////////// UNTUK MENUNGGU HINGGA REGISTRASI SELESAI //////////////////
+                // await _controller.register();
               },
               child: const Text('Register'),
             ),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobilepraktikum/controller/appwrite.dart';
+import 'package:mobilepraktikum/view/dashboard/home_main.dart';
 import 'package:mobilepraktikum/view/welcome_screen/register_page.dart';
 
 import '../../controller/auth_controller.dart';
 
 class LoginPage extends StatelessWidget {
-  ///////////////
+  final emailControl = TextEditingController();
+  final passControl = TextEditingController();
   final LoginController _controller = Get.put(LoginController());
 
   @override
@@ -20,21 +23,47 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              //////////////////////
-              onChanged: (value) => _controller.email.value = value,
+              controller: emailControl,
+              // onChanged: (value) => _controller.email.value = value,
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 16),
             TextField(
-              ///////////////////////////
-              onChanged: (value) => _controller.password.value = value,
+              controller: passControl,
+              // onChanged: (value) => _controller.password.value = value,
               obscureText: true,
               decoration: const InputDecoration(labelText: 'Password'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               /////////////////////////////
-              onPressed: () => _controller.login(),
+              onPressed: () async {
+                try {
+                  await loginUser(emailControl.text, passControl.text)
+                      .then((value) {
+                    if (value == true) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Login Success"),
+                        backgroundColor: Colors.green,
+                      ));
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Home()),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(value),
+                        backgroundColor: Colors.red,
+                      ));
+                    }
+                  });
+                } catch (error) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(error.toString()),
+                    backgroundColor: Colors.red,
+                  ));
+                }
+              },
               child: const Text('Login'),
             ),
             Row(
@@ -45,12 +74,13 @@ class LoginPage extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Colors.black),
-                ),//text
-                TextButton(onPressed: () {
-                  Navigator.of(context).
-                  pushReplacement(MaterialPageRoute(builder: (context) =>
-                      RegistrationPage(),));
-                },
+                ), //text
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => RegistrationPage(),
+                    ));
+                  },
                   child: const Text(
                     "Register",
                     style: TextStyle(

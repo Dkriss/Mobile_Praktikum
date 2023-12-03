@@ -1,14 +1,14 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobilepraktikum/controller/appwrite.dart';
 
 import '../welcome_screen/login_page.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
-
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -16,7 +16,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   File? _image;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  // KALAU PAKAI FIREBASE HARUS DI OFF COMENT DIBAWAH INI
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +29,9 @@ class _ProfileState extends State<Profile> {
           IconButton(
             icon: const Icon(Icons.exit_to_app),
             onPressed: () async {
+              await logoutUser();
               // Log out the user
-              await _auth.signOut();
+              // await _auth.signOut();
               // Navigate to the registration page
               Get.offAll(() => LoginPage());
             },
@@ -44,14 +46,14 @@ class _ProfileState extends State<Profile> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 40),
                 child: GestureDetector(
-                  onTap: ()async{
+                  onTap: () async {
                     final ImagePicker picker = ImagePicker();
-                    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+                    final XFile? image =
+                    await picker.pickImage(source: ImageSource.camera);
                     // untuk menyimpan gambar yang telah diambil lewat camera
                     setState(() {
                       _image = File(image!.path);
                     });
-
                   },
                   child: Container(
                     width: 170,
@@ -59,10 +61,9 @@ class _ProfileState extends State<Profile> {
                     decoration: BoxDecoration(
                       color: Colors.grey[400],
                       image: DecorationImage(
-                        image: _image == null ?
-                        const AssetImage(
-                            'assets/blank_putih.jpg') :
-                        FileImage(_image!) as ImageProvider ,
+                        image: _image == null
+                            ? const AssetImage('assets/blank_putih.jpg')
+                            : FileImage(_image!) as ImageProvider,
                         fit: BoxFit.fill,
                       ),
                       shape: BoxShape.circle,
