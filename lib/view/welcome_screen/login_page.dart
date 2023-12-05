@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobilepraktikum/controller/appwrite.dart';
+import 'package:mobilepraktikum/controller/login_register/appwrite.dart';
 import 'package:mobilepraktikum/view/dashboard/home_main.dart';
 import 'package:mobilepraktikum/view/welcome_screen/register_page.dart';
 
-import '../../controller/auth_controller.dart';
+import '../../controller/login_register/auth_controller.dart';
 
 class LoginPage extends StatelessWidget {
   final emailControl = TextEditingController();

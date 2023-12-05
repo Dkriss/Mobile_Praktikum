@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mobilepraktikum/controller/appwrite.dart';
+import 'package:mobilepraktikum/controller/login_register/appwrite.dart';
 import '../welcome_screen/login_page.dart';
 
 class Profile extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobilepraktikum/controller/appwrite.dart';
+import 'package:mobilepraktikum/controller/login_register/appwrite.dart';
 // import 'package:mobilepraktikum/controller/auth_controller.dart';
 import 'package:mobilepraktikum/view/welcome_screen/login_page.dart';
 
