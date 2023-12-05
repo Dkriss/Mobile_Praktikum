@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mobilepraktikum/controller/db_controller.dart';
+// API Keywoard Search
+import 'package:mobilepraktikum/controller/destination_api.dart';
 import 'package:mobilepraktikum/model/destination_model.dart';
 import 'package:mobilepraktikum/model/transportation_model.dart';
 import 'package:mobilepraktikum/view/dashboard/log_note.dart';
 import 'package:mobilepraktikum/view/dashboard/profile.dart';
-// API Keywoard Search
-import 'package:mobilepraktikum/controller/destination_api.dart';
+import 'package:mobilepraktikum/view/dashboard/shopping_chart.dart';
 
 
 class Home extends StatefulWidget {
@@ -15,39 +18,146 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  ///////////// UNTUK MENGAMBIL DATA PADA ADD TO CHART ///////////////////
+  final DbCon = Get.put(DatabaseController());
 ///////// Deklarasi tipe data dari  /////////
   String searchKeyword = "";
   late DestinationApi api;
 ///////// Deklarasi tipe data dari  /////////
   // untuk mengatur pemberian definisi pada setiap container List Elevated Button yang diatas
-  List<TransportationModel> daftarTransportation=[
+  List<TransportationModel> daftarTransportation = [
     TransportationModel(title: 'Promo', icon: Icons.sell_rounded),
     TransportationModel(title: 'Hotels', icon: Icons.hotel),
     TransportationModel(title: 'Flights', icon: Icons.flight),
     TransportationModel(title: 'Trains', icon: Icons.train_rounded),
     TransportationModel(title: 'Cars', icon: Icons.car_rental)
   ];
+  List<DestinationModel> DestiMo = [];
+  Map<dynamic,dynamic> shoppingCart = {};
   // untuk mengatur pemberian definisi pada setiap container List informasi yang ditengah
-  List<DestinationModel> daftarDestination=[
-    DestinationModel(title: 'Horison Hotel', location: 'Bali, Indonesia', price: '\$100/night', icon: Icons.star, image: 'assets/hotel_1.jpg'),
-    DestinationModel(title: 'Mangku Resort', location: 'Bandung, Indonesia', price: '\$80/night', icon: Icons.star, image: 'assets/hotel_2.jpg'),
-    DestinationModel(title: 'Majapahit Hotel', location: 'Jogja, Indonesia', price: '\$70/night', icon: Icons.star, image: 'assets/hotel_3.jpg'),
-    DestinationModel(title: 'Louson HomeStay', location: 'Bogor, Indonesia', price: '\$120/night', icon: Icons.star, image: 'assets/hotel_4.jpg'),
-    DestinationModel(title: 'Leaf Resort & Hotel', location: 'Bali, Indonesia', price: '\$30/night', icon: Icons.star, image: 'assets/hotel_5.jpg'),
-    DestinationModel(title: 'Anker & Rum Hotel', location: 'Surabaya, Indonesia', price: '\$45/night', icon: Icons.star, image: 'assets/hotel_6.jpg'),
-    DestinationModel(title: 'Ubud Nation Resort', location: 'Bali, Indonesia', price: '\$90/night', icon: Icons.star, image: 'assets/hotel_7.jpg'),
-    DestinationModel(title: 'Reddoors Badung', location: 'Bali, Indonesia', price: '\$65/night', icon: Icons.star, image: 'assets/hotel_8.jpg'),
-    DestinationModel(title: 'Resident Hotel', location: 'Labuan Bajo, Indonesia', price: '\$46/night', icon: Icons.star, image: 'assets/hotel_9.jpg'),
-    DestinationModel(title: 'Melow Resort & Resto', location: 'Banyuwangi, Indonesia', price: '\$39/night', icon: Icons.star, image: 'assets/hotel_10.jpg'),
+  List<DestinationModel> daftarDestination = [
+    DestinationModel(
+        title: 'Horison Hotel',
+        location: 'Bali, Indonesia',
+        price: '\$100/night',
+        icon: Icons.star,
+        image: 'assets/hotel_1.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Mangku Resort',
+        location: 'Bandung, Indonesia',
+        price: '\$80/night',
+        icon: Icons.star,
+        image: 'assets/hotel_2.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Majapahit Hotel',
+        location: 'Jogja, Indonesia',
+        price: '\$70/night',
+        icon: Icons.star,
+        image: 'assets/hotel_3.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Louson HomeStay',
+        location: 'Bogor, Indonesia',
+        price: '\$120/night',
+        icon: Icons.star,
+        image: 'assets/hotel_4.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Leaf Resort & Hotel',
+        location: 'Bali, Indonesia',
+        price: '\$30/night',
+        icon: Icons.star,
+        image: 'assets/hotel_5.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Anker & Rum Hotel',
+        location: 'Surabaya, Indonesia',
+        price: '\$45/night',
+        icon: Icons.star,
+        image: 'assets/hotel_6.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Ubud Nation Resort',
+        location: 'Bali, Indonesia',
+        price: '\$90/night',
+        icon: Icons.star,
+        image: 'assets/hotel_7.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Reddoors Badung',
+        location: 'Bali, Indonesia',
+        price: '\$65/night',
+        icon: Icons.star,
+        image: 'assets/hotel_8.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Resident Hotel',
+        location: 'Labuan Bajo, Indonesia',
+        price: '\$46/night',
+        icon: Icons.star,
+        image: 'assets/hotel_9.jpg',
+        id: ''),
+    DestinationModel(
+        title: 'Melow Resort & Resto',
+        location: 'Banyuwangi, Indonesia',
+        price: '\$39/night',
+        icon: Icons.star,
+        image: 'assets/hotel_10.jpg',
+        id: ''),
   ];
+  void _showDestinationDialog(DestinationModel destination) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(destination.title),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Location: ${destination.location}'),
+              Text('Price: ${destination.price}'),
+              // Tombol "+" untuk menambahkan destinasi ke keranjang belanja
+              ElevatedButton(
+                ////// untuk menambahkan ke database dari db controller
+                onPressed: () async {
+                   var result = await DbCon.storeUserName({'nama_hotel': destination.title, 'lokasi': destination.location});
+                  setState(() {
+                    destination.id = result;
+                    DestiMo.add(destination);
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Add to Cart'),
+              ),
+              // Add more details as needed
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   ////////////////////////////////
   void initState() {
     super.initState();
-    api = DestinationApi(daftarDestination);  // Inisialisasi API dengan data destination
+    api = DestinationApi(
+        daftarDestination); // Inisialisasi API dengan data destination
   }
-  List<DestinationModel> get filteredDestinations => api.searchDestinations(searchKeyword);
+
+  List<DestinationModel> get filteredDestinations =>
+      api.searchDestinations(searchKeyword);
   ////////////////////////////////
   @override
   Widget build(BuildContext context) {
@@ -106,14 +216,15 @@ class _HomeState extends State<Home> {
                 ],
               ),
 
-
               // container untuk menambahkan textfield
               Padding(
-                padding: const EdgeInsets.only(left: 0, top: 85, right: 0, bottom: 25),
+                padding: const EdgeInsets.only(
+                    left: 0, top: 85, right: 0, bottom: 25),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),  // Penambahan padding horizontal
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15), // Penambahan padding horizontal
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(15),
@@ -121,7 +232,8 @@ class _HomeState extends State<Home> {
                     child: SizedBox(
                       height: 60,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Ini yang menyebar widget dalam Row
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween, // Ini yang menyebar widget dalam Row
                         children: [
                           const Icon(
                             Icons.search,
@@ -157,19 +269,21 @@ class _HomeState extends State<Home> {
                 ),
               ),
 
-
-
               // container widget bagian bawah 4 tombol elevatedButton ListView dengan gerakan horizontal
               Padding(
-                padding: const EdgeInsets.only(left: 0, top: 150, right: 0, bottom: 0),
+                padding: const EdgeInsets.only(
+                    left: 0, top: 150, right: 0, bottom: 0),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Container(
                     height: 70, // Tinggi container
-                    padding: const EdgeInsets.only(left: 0, right: 0, top: 15, bottom: 15),
+                    padding: const EdgeInsets.only(
+                        left: 0, right: 0, top: 15, bottom: 15),
                     margin: const EdgeInsets.only(left: 0, right: 0),
-                    child: NotificationListener<OverscrollIndicatorNotification>(
-                      onNotification: (OverscrollIndicatorNotification overscroll){
+                    child:
+                    NotificationListener<OverscrollIndicatorNotification>(
+                      onNotification:
+                          (OverscrollIndicatorNotification overscroll) {
                         overscroll.disallowIndicator();
                         return true;
                       },
@@ -178,9 +292,11 @@ class _HomeState extends State<Home> {
                         itemCount: daftarTransportation.length,
                         itemBuilder: (BuildContext context, int index) {
                           return SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.3, // 30% dari lebar layar
+                            width: MediaQuery.of(context).size.width *
+                                0.3, // 30% dari lebar layar
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 0),
                               child: ElevatedButton(
                                 onPressed: () {},
                                 style: ElevatedButton.styleFrom(
@@ -189,7 +305,8 @@ class _HomeState extends State<Home> {
                                   ),
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceAround,
                                   children: [
                                     // Tambahkan kondisi ini untuk memastikan ikon tidak null
                                     Icon(daftarTransportation[index].icon),
@@ -206,11 +323,10 @@ class _HomeState extends State<Home> {
                 ),
               ),
 
-
-
               // Container untuk informasi di tengah serta listview informasi
               Padding(
-                padding: const EdgeInsets.only(left: 0, top: 100, right: 0, bottom: 0),
+                padding: const EdgeInsets.only(
+                    left: 0, top: 100, right: 0, bottom: 0),
                 child: Align(
                   alignment: Alignment.center,
                   child: Container(
@@ -222,8 +338,10 @@ class _HomeState extends State<Home> {
                     ),
                     // untuk menonaktifkan notifikasi overscroll
                     // warna biru jika sudah di paling atas
-                    child: NotificationListener<OverscrollIndicatorNotification>(
-                      onNotification: (OverscrollIndicatorNotification overscroll) {
+                    child:
+                    NotificationListener<OverscrollIndicatorNotification>(
+                      onNotification:
+                          (OverscrollIndicatorNotification overscroll) {
                         overscroll.disallowIndicator();
                         return true;
                       },
@@ -232,10 +350,11 @@ class _HomeState extends State<Home> {
                         /////////// Filterisasi ukuran destinasi ////////////
                         itemCount: filteredDestinations.length,
                         itemBuilder: (BuildContext context, int index) {
-                          DestinationModel destination = filteredDestinations[index];
+                          DestinationModel destination =
+                          filteredDestinations[index];
                           ///////// Filterisasi ukuran destinasi /////////
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                          return GestureDetector(
+                            onTap: () => _showDestinationDialog(destination),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(24),
@@ -250,36 +369,27 @@ class _HomeState extends State<Home> {
                                       topLeft: Radius.circular(24),
                                       topRight: Radius.circular(24),
                                     ),
-                                    child: Image.asset(destination.image, height: 100, width: double.infinity, fit: BoxFit.cover),
+                                    child: Image.asset(destination.image,
+                                        height: 100,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover),
                                   ),
                                   const SizedBox(height: 8),
                                   // Title
-                                  Text(
-                                      destination.title,
+                                  Text(destination.title,
                                       style: const TextStyle(
-                                          fontWeight: FontWeight.bold
-                                      )
-                                  ),
+                                          fontWeight: FontWeight.bold)),
                                   // Location
-                                  Text(
-                                      destination.location,
-                                      style: TextStyle(
-                                          color: Colors.grey[600]
-                                      )
-                                  ),
+                                  Text(destination.location,
+                                      style:
+                                      TextStyle(color: Colors.grey[600])),
                                   // Price
-                                  Text(
-                                      destination.price,
+                                  Text(destination.price,
                                       style: const TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          color: Colors.green
-                                      )
-                                  ),
+                                          color: Colors.green)),
                                   // Icon
-                                  Icon(
-                                      destination.icon,
-                                      color: Colors.amber
-                                  ),
+                                  Icon(destination.icon, color: Colors.amber),
                                 ],
                               ),
                             ),
@@ -290,8 +400,6 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-
-
 
               // navigation button untuk pindah layar halaman
               Padding(
@@ -341,13 +449,20 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             height: 55,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  ///////// untuk Routes ke DestiMo Items /////////////////
+                                  builder: (context) =>
+                                      ShoppingCart(cartItems: DestiMo),
+                                ),
+                              ),
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18),
                                 ),
                               ),
-                              child: const Icon(Icons.message),
+                              child: const Icon(Icons.shopping_cart),
                             ),
                           ),
                           SizedBox(
@@ -356,7 +471,8 @@ class _HomeState extends State<Home> {
                               onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Profile())), //ke halaman profile
+                                      builder: (context) =>
+                                      const Profile())), //ke halaman profile
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18),

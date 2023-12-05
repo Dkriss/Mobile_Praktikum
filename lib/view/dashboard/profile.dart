@@ -1,10 +1,8 @@
 import 'dart:io';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobilepraktikum/controller/appwrite.dart';
-
 import '../welcome_screen/login_page.dart';
 
 class Profile extends StatefulWidget {
@@ -16,8 +14,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   File? _image;
-  // KALAU PAKAI FIREBASE HARUS DI OFF COMENT DIBAWAH INI
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  List<String> loggedInAccounts = ['User1', 'User2', 'User3'];
+  List<String> additionalAccounts = [];
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +28,6 @@ class _ProfileState extends State<Profile> {
             icon: const Icon(Icons.exit_to_app),
             onPressed: () async {
               await logoutUser();
-              // Log out the user
-              // await _auth.signOut();
-              // Navigate to the registration page
               Get.offAll(() => LoginPage());
             },
           ),
@@ -50,7 +45,6 @@ class _ProfileState extends State<Profile> {
                     final ImagePicker picker = ImagePicker();
                     final XFile? image =
                     await picker.pickImage(source: ImageSource.camera);
-                    // untuk menyimpan gambar yang telah diambil lewat camera
                     setState(() {
                       _image = File(image!.path);
                     });
@@ -69,6 +63,69 @@ class _ProfileState extends State<Profile> {
                       shape: BoxShape.circle,
                     ),
                   ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 20,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Logged In Accounts:',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: loggedInAccounts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(loggedInAccounts[index]),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          // Tambahkan akun baru ke dalam list
+                          additionalAccounts.add('NewUser${additionalAccounts.length + 1}');
+                        });
+                      },
+                      child: const Text('Tambah Akun Baru'),
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: additionalAccounts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(additionalAccounts[index]),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
