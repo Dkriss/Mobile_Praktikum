@@ -9,7 +9,6 @@ import 'package:mobilepraktikum/view/dashboard/log_note.dart';
 import 'package:mobilepraktikum/view/dashboard/profile.dart';
 import 'package:mobilepraktikum/view/dashboard/shopping_chart.dart';
 
-
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -33,7 +32,7 @@ class _HomeState extends State<Home> {
     TransportationModel(title: 'Cars', icon: Icons.car_rental)
   ];
   List<DestinationModel> DestiMo = [];
-  Map<dynamic,dynamic> shoppingCart = {};
+  Map<dynamic, dynamic> shoppingCart = {};
   // untuk mengatur pemberian definisi pada setiap container List informasi yang ditengah
   List<DestinationModel> daftarDestination = [
     DestinationModel(
@@ -42,107 +41,155 @@ class _HomeState extends State<Home> {
         price: '\$100/night',
         icon: Icons.star,
         image: 'assets/hotel_1.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
     DestinationModel(
         title: 'Mangku Resort',
         location: 'Bandung, Indonesia',
         price: '\$80/night',
         icon: Icons.star,
         image: 'assets/hotel_2.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
     DestinationModel(
         title: 'Majapahit Hotel',
         location: 'Jogja, Indonesia',
         price: '\$70/night',
         icon: Icons.star,
         image: 'assets/hotel_3.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
     DestinationModel(
         title: 'Louson HomeStay',
         location: 'Bogor, Indonesia',
         price: '\$120/night',
         icon: Icons.star,
         image: 'assets/hotel_4.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
     DestinationModel(
-        title: 'Leaf Resort & Hotel',
-        location: 'Bali, Indonesia',
-        price: '\$30/night',
-        icon: Icons.star,
-        image: 'assets/hotel_5.jpg',
-        id: ''),
+      title: 'Leaf Resort & Hotel',
+      location: 'Bali, Indonesia',
+      price: '\$30/night',
+      icon: Icons.star,
+      image: 'assets/hotel_5.jpg',
+      id: '',
+      quantity: 10,
+    ),
     DestinationModel(
         title: 'Anker & Rum Hotel',
         location: 'Surabaya, Indonesia',
         price: '\$45/night',
         icon: Icons.star,
         image: 'assets/hotel_6.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
     DestinationModel(
         title: 'Ubud Nation Resort',
         location: 'Bali, Indonesia',
         price: '\$90/night',
         icon: Icons.star,
         image: 'assets/hotel_7.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
     DestinationModel(
         title: 'Reddoors Badung',
         location: 'Bali, Indonesia',
         price: '\$65/night',
         icon: Icons.star,
         image: 'assets/hotel_8.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
     DestinationModel(
         title: 'Resident Hotel',
         location: 'Labuan Bajo, Indonesia',
         price: '\$46/night',
         icon: Icons.star,
         image: 'assets/hotel_9.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
     DestinationModel(
         title: 'Melow Resort & Resto',
         location: 'Banyuwangi, Indonesia',
         price: '\$39/night',
         icon: Icons.star,
         image: 'assets/hotel_10.jpg',
-        id: ''),
+        id: '',
+        quantity: 10),
   ];
   void _showDestinationDialog(DestinationModel destination) {
+    int quantity = 1; // Initialize quantity to 1
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(destination.title),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Location: ${destination.location}'),
-              Text('Price: ${destination.price}'),
-              // Tombol "+" untuk menambahkan destinasi ke keranjang belanja
-              ElevatedButton(
-                ////// untuk menambahkan ke database dari db controller
-                onPressed: () async {
-                   var result = await DbCon.storeUserName({'nama_hotel': destination.title, 'lokasi': destination.location});
-                  setState(() {
-                    destination.id = result;
-                    DestiMo.add(destination);
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Add to Cart'),
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text(destination.title),
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Location: ${destination.location}'),
+                  Text('Price: ${destination.price}'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Quantity: $quantity'),
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (quantity > 1) {
+                                  quantity--;
+                                }
+                              });
+                            },
+                            icon: Icon(Icons.remove),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                quantity++;
+                              });
+                            },
+                            icon: Icon(Icons.add),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                    ////// untuk menambahkan ke database dari db controller
+                    onPressed: () async {
+                      var result = await DbCon.storeUserName({
+                        'nama_hotel': destination.title,
+                        'lokasi': destination.location,
+                        'quantity': destination
+                            .quantity, // Add quantity to the database
+                      });
+                      setState(() {
+                        destination.id = result;
+                        DestiMo.add(destination);
+                      });
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Add to Cart'),
+                  ),
+                ],
               ),
-              // Add more details as needed
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-          ],
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Close'),
+                ),
+              ],
+            );
+          },
         );
       },
     );

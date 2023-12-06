@@ -9,13 +9,15 @@ class DestinationModel {
   final IconData icon;
   final String image;
 
-  DestinationModel({
-    required this.title,
-    required this.location,
-    required this.price,
-    required this.icon,
-    required this.image,
-    required this.id,
-  });
-   String id;
+  DestinationModel(
+      {required this.title,
+        required this.location,
+        required this.price,
+        required this.icon,
+        required this.image,
+        required this.id,
+        required this.quantity,});
+
+  String id;
+  int quantity;
 }
