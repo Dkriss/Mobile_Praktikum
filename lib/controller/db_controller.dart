@@ -9,7 +9,7 @@ class DatabaseController extends GetxController {
     super.onInit();
     Client client = Client()
         .setEndpoint('https://cloud.appwrite.io/v1')
-        .setProject('65681c2876335f043633')
+        .setProject('65672a4d2f050e5a3cf7')
         .setSelfSigned(status: true);
 // appwrite
     databases = Databases(client);
@@ -18,9 +18,9 @@ class DatabaseController extends GetxController {
   Future storeUserName(Map map) async {
     try {
       final result = await databases!.createDocument(
-        databaseId: "6570166b4e29ea3012fe",
+        databaseId: "dkriss12345",
         documentId: ID.unique(),
-        collectionId: "657016b2521a9a756f0a",
+        collectionId: "656f42a22dd525d5e64d",
         data: map,
         permissions: [
           Permission.read(Role.any()),
@@ -47,9 +47,9 @@ class DatabaseController extends GetxController {
   Future deletePesanan(String id) async {
     try {
       final result = await databases!.deleteDocument(
-        databaseId: "6570166b4e29ea3012fe",
+        databaseId: "dkriss12345",
         documentId: id,
-        collectionId: "657016b2521a9a756f0a",
+        collectionId: "656f42a22dd525d5e64d",
       );
       return result;
     } catch (error) {
@@ -70,9 +70,9 @@ class DatabaseController extends GetxController {
   Future updateQuantity(String id, int quantity) async {
     try {
       final result = await databases!.updateDocument(
-        databaseId: "6570166b4e29ea3012fe",
+        databaseId: "dkriss12345",
         documentId: id,
-        collectionId: "657016b2521a9a756f0a",
+        collectionId: "656f42a22dd525d5e64d",
         data: {
           'quantity': quantity,
         },
